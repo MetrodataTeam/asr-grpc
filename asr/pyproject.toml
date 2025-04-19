@@ -1,0 +1,25 @@
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
+
+[tool.poetry]
+authors = ["Deo <liangzhanzhao@metrodata.cn>"]
+description = "grpc server & client for ASR"
+name = "mdt-grpc-asr"
+readme = "README.md"
+version = "0.0.0"
+
+[tool.poetry.dependencies]
+betterproto = "v2.0.0b7"
+ctranslate2 = ">4.4.0"
+faster-whisper = ">=1.1.1"
+grpclib = {version = ">=0.4.7", extras = ["protobuf"]}
+onnxruntime = ">=0.19.2"
+pydantic-settings = ">=2.0.3"
+python = ">=3.9,<3.13"
+
+[tool.poetry.group.gpu]
+optional = true
+
+[tool.poetry.group.gpu.dependencies]
+onnxruntime-gpu = ">1.18.0"

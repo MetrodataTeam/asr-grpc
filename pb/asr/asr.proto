@@ -1,0 +1,53 @@
+syntax = "proto3";
+package asr;
+
+service ASRService{
+  rpc transcribe(Audio) returns (AudioResponse) {}
+}
+
+message VadOptions{
+  // defaults from faster-whisper
+  // threshold: float = 0.5
+  // neg_threshold: float = None
+  // min_speech_duration_ms: int = 0
+  // max_speech_duration_s: float = float("inf")
+  // min_silence_duration_ms: int = 2000
+  // speech_pad_ms: int = 400
+  optional float threshold = 1;
+  optional float neg_threshold = 2;
+  optional uint32 min_speech_duration_ms = 3;
+  optional float max_speech_duration_s = 4;
+  optional uint32 min_silence_duration_ms = 5;
+  optional uint32 speech_pad_ms = 6;
+}
+
+message Audio{
+  // for debug/logging usage
+  optional string info = 2;
+  bytes data = 1;
+  // https://github.com/SYSTRAN/faster-whisper/blob/master/faster_whisper/transcribe.py#L184
+  optional string initial_prompt = 3;
+  optional string language = 4;
+  optional uint32 min_silence_duration_ms = 5;
+  optional bool vad_filter = 6;
+  optional bool numpy_data = 7;
+  optional VadOptions vad_options = 8;
+}
+
+message Info {
+  string language = 1;
+  float probability = 2;
+}
+
+message Segment{
+  float start = 1;
+  float end = 2;
+  string text = 3;
+  float no_speech_prob = 4;
+}
+
+message AudioResponse{
+  string text = 1;
+  Info info = 2;
+  repeated Segment segments = 3;
+}
